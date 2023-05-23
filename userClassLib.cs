@@ -699,7 +699,7 @@ namespace xddddd
             }
             private void grid_Loaded_0(object sender, RoutedEventArgs e)
             {
-                window.Title = "Fiókok beállításainak módosítása";
+                window.Title = "Fiókok beállításainak módosítása (Felhasználó:"+ currUser.UserName + ")";
                 Binding b = new Binding();
                 b.Mode = BindingMode.TwoWay;
                 b.ValidatesOnExceptions = true;
@@ -772,6 +772,7 @@ namespace xddddd
             }
             private void grid_Loaded_1(object sender, RoutedEventArgs e)
             {
+                window.Title = "Fiók adatainak módosítása (Felhasználó:"+ currUser.UserName + ")";
                 grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 Binding b = new Binding();
                 b.Mode = BindingMode.TwoWay;
