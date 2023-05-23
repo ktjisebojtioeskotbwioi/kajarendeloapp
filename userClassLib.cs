@@ -663,6 +663,7 @@ namespace xddddd
             Window window = new Window();
             DataGrid grid = new DataGrid();
             StackPanel panel = new StackPanel();
+            private static string currentCellValue = "";
             internal GridBox(int x)
             {
                 window.Width = 500;
@@ -701,6 +702,8 @@ namespace xddddd
                 grid.Height = 300;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
+                grid.PreparingCellForEdit += CellEditStarting;
+                grid.CellEditEnding += CellEditValidation;
                 window.Title = "Fiókok beállításainak módosítása";
                 grid.DataContext = userList;
                 grid.ItemsSource = userList;
@@ -713,7 +716,7 @@ namespace xddddd
                 DataGridTextColumn userNameColumn = new DataGridTextColumn();
                 DataGridTemplateColumn passwordColumn = new DataGridTemplateColumn();
                 DataGridTextColumn emailColumn = new DataGridTextColumn();
-                DataGridTextColumn permsColumn = new DataGridTextColumn();
+                DataGridTemplateColumn permsColumn = new DataGridTemplateColumn();
                 IDColumn.Header = "ID";
                 IDColumn.Binding = b;
                 IDColumn.Width = DataGridLength.Auto;
@@ -722,7 +725,6 @@ namespace xddddd
                 userNameColumn.Binding = b;
                 userNameColumn.Width = DataGridLength.Auto;
                 userNameColumn.Header = "Felhasználónév";
-
                 DataTemplate dtt = new DataTemplate();
                 FrameworkElementFactory button = new FrameworkElementFactory(typeof(Button));
                 button.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Clicked));
@@ -735,9 +737,16 @@ namespace xddddd
                 b = new Binding("Email");
                 emailColumn.Header = "Email cím";
                 emailColumn.Binding = b;
+                DataTemplate dtt2 = new DataTemplate();
+                FrameworkElementFactory comboBox1 = new FrameworkElementFactory(typeof(ComboBox));
+                comboBox1.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBoxSelectionChanged));
+                comboBox1.SetValue(ComboBox.ItemsSourceProperty, new string[]{"a", "n"});
+                comboBox1.SetValue(ComboBox.SelectedItemProperty, "a");
+                dtt2.VisualTree = comboBox1;
+                permsColumn.CellTemplate = dtt2;
                 permsColumn.Header = "Jogok";
                 b = new Binding("Perms");
-                permsColumn.Binding = b;
+                permsColumn.IsReadOnly = true;
                 permsColumn.Width = DataGridLength.Auto;
                 grid.Columns.Add(IDColumn);
                 grid.Columns.Add(userNameColumn);
@@ -768,6 +777,7 @@ namespace xddddd
                 userNameColumn.Binding = new Binding("UserName");
                 userNameColumn.Width = DataGridLength.Auto;
                 userNameColumn.Header = "Felhasználónév";
+
                 DataTemplate dtt = new DataTemplate();
                 FrameworkElementFactory button = new FrameworkElementFactory(typeof(Button));
                 button.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Clicked));
@@ -781,6 +791,7 @@ namespace xddddd
                 permsColumn.Header = "Jogok";
                 permsColumn.Binding = new Binding("Perms");
                 permsColumn.Width = DataGridLength.Auto;
+                permsColumn.IsReadOnly = true;
                 grid.Columns.Add(IDColumn);
                 grid.Columns.Add(userNameColumn);
                 grid.Columns.Add(passwordColumn);
@@ -995,9 +1006,19 @@ namespace xddddd
                     MessageBox.Show(ex.Message);
                 }
             }
+            private void CellEditStarting(object sender, DataGridPreparingCellForEditEventArgs e)
+            {                   
+                currentCellValue = (grid.SelectedCells[0].Column.GetCellContent(grid.SelectedCells[0].Item) as TextBlock).Text;      
+                MessageBox.Show(currentCellValue);
+            }
             private void CellEditValidation(object sender, DataGridCellEditEndingEventArgs e)
             {
+                MessageBox.Show("");
                 e.Cancel = true;
+            }
+            private void ComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+
             }
         }
     }
