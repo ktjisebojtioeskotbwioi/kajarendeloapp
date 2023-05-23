@@ -31,19 +31,19 @@ namespace xddddd
         private protected string emKey { get => emkey; set => emkey = value; }
         //felhasználónév property
         private protected string userName;
-        internal string UserName { get => userName; private protected set => userName = value; }
+        public string UserName { get => userName; set => userName = value; }
         //titkosított jelszó property
         private protected string PW;
         private protected string Password { get => PW; set => PW = value; }
         //ID property
         private protected string id;
-        internal string ID { get => id; private protected set => id = value; }
+        public string ID { get => id; private protected set => id = value; }
         //jogok (admin: "a", alap: "n"), muszáj megadni
         private protected string perms;
-        internal string Perms { get => perms; private protected set => perms = value; }
+        public string Perms { get => perms; private protected set => perms = value; }
         //email cím
         private protected string email;
-        internal string Email { get => email; private protected set => email = value; }
+        public string Email { get => email; set => email = value; }
         //előforduló karakterek, hosszú
         private protected static readonly char[] chars = new char[62]
         {
@@ -689,8 +689,7 @@ namespace xddddd
                 }
                 grid.HorizontalAlignment = HorizontalAlignment.Left;
                 panel.Children.Add(grid);
-                window.Content = panel;
-                window.DataContext = this;
+                window.Content = panel;                
                 window.Show();
             }
             private void grid_Loaded_0(object sender, RoutedEventArgs e)
@@ -705,30 +704,40 @@ namespace xddddd
                 window.Title = "Fiókok beállításainak módosítása";
                 grid.DataContext = userList;
                 grid.ItemsSource = userList;
+                Binding b = new Binding();
+                b.Mode = BindingMode.TwoWay;
+                b.ValidatesOnExceptions = true;
+                b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                b = new Binding("ID");
                 DataGridTextColumn IDColumn = new DataGridTextColumn();
                 DataGridTextColumn userNameColumn = new DataGridTextColumn();
                 DataGridTemplateColumn passwordColumn = new DataGridTemplateColumn();
                 DataGridTextColumn emailColumn = new DataGridTextColumn();
                 DataGridTextColumn permsColumn = new DataGridTextColumn();
                 IDColumn.Header = "ID";
-                IDColumn.Binding = new Binding("ID");
+                IDColumn.Binding = b;
                 IDColumn.Width = DataGridLength.Auto;
                 IDColumn.IsReadOnly = true;
-                userNameColumn.Binding = new Binding("UserName");
+                b = new Binding("UserName");
+                userNameColumn.Binding = b;
                 userNameColumn.Width = DataGridLength.Auto;
                 userNameColumn.Header = "Felhasználónév";
+
                 DataTemplate dtt = new DataTemplate();
                 FrameworkElementFactory button = new FrameworkElementFactory(typeof(Button));
                 button.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Clicked));
+                button.SetValue(Button.ContentProperty, "Jelszó változtatása");
                 dtt.VisualTree = button;
                 passwordColumn.CellTemplate = dtt;
                 passwordColumn.Header = "Jelszó";
                 passwordColumn.Width = DataGridLength.Auto;
                 passwordColumn.IsReadOnly = true;
+                b = new Binding("Email");
                 emailColumn.Header = "Email cím";
-                emailColumn.Binding = new Binding("Email");
+                emailColumn.Binding = b;
                 permsColumn.Header = "Jogok";
-                permsColumn.Binding = new Binding("Perms");
+                b = new Binding("Perms");
+                permsColumn.Binding = b;
                 permsColumn.Width = DataGridLength.Auto;
                 grid.Columns.Add(IDColumn);
                 grid.Columns.Add(userNameColumn);
@@ -788,6 +797,7 @@ namespace xddddd
                 grid.Height = 300;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
+                grid.CellEditEnding += CellEditValidation;
                 window.Title = "Fiók beállításainak módosítása";
                 grid.ItemsSource = User.userList.Where(x => x.ID == currUser.ID);
                 DataGridTextColumn IDColumn = new DataGridTextColumn();
@@ -984,6 +994,10 @@ namespace xddddd
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+            private void CellEditValidation(object sender, DataGridCellEditEndingEventArgs e)
+            {
+                e.Cancel = true;
             }
         }
     }
