@@ -54,11 +54,6 @@ namespace xddddd
             User.LogOut();
         }
 
-        private void deleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            User.DeleteUser();
-        }
-
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             User.EditUser();
