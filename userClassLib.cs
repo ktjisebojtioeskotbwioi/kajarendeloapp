@@ -665,7 +665,7 @@ namespace xddddd
             private DataGridTemplateColumn permsColumn = new DataGridTemplateColumn() { Header = "Jogosultságok", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn deleteColumn = new DataGridTemplateColumn() { Header = "Fiók törlése", Width = DataGridLength.Auto, IsReadOnly = true };
             private static string currentCellValue = "";
-            private static int isFirstRun = 0;
+            private int isFirstRun = 0;
             internal GridBox(int x)
             {
                 window.Width = 510;
