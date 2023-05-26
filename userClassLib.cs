@@ -57,6 +57,9 @@ namespace xddddd
         //felhasználó hozzáadó konstruktor (regisztráció)
         public User(string username, string password, string email, string perms = "n")
         {
+            File.SetAttributes("userData.txt", FileAttributes.Normal);
+            File.SetAttributes("keys.txt", FileAttributes.Normal);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
             try
             {
                 if (username != string.Empty && password != string.Empty)
@@ -189,6 +192,9 @@ namespace xddddd
                 this.perms = string.Empty;
                 MessageBox.Show(e.Message);
             }
+            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
         }
         //felhasználó beolvasó konstruktor (csak a beolvasó methodnek)
         private protected User(string id, string username, string encrPw, string email, string unkey, string pwkey, string emkey, string perms)
@@ -209,6 +215,9 @@ namespace xddddd
             {
                 if (File.Exists("userData.txt") && File.Exists("keys.txt") && File.Exists("currentLogin.txt"))
                 {
+                    File.SetAttributes("userData.txt", FileAttributes.Normal);
+                    File.SetAttributes("keys.txt", FileAttributes.Normal);
+                    File.SetAttributes("currentLogin.txt", FileAttributes.Normal);                   
                     string[] x = File.ReadAllLines("userData.txt");
                     string[] y = File.ReadAllLines("keys.txt");
                     string[] z = File.ReadAllLines("currentLogin.txt");
@@ -235,11 +244,11 @@ namespace xddddd
                 else
                 {
                     FileStream f1 = File.Open("userData.txt", FileMode.OpenOrCreate);
-                    //File.SetAttributes(f1.Name, FileAttributes.Hidden);
+                    File.SetAttributes(f1.Name, FileAttributes.Hidden);
                     FileStream f2 = File.Open("keys.txt", FileMode.OpenOrCreate);
-                    //File.SetAttributes(f2.Name, FileAttributes.Hidden);                    
+                    File.SetAttributes(f2.Name, FileAttributes.Hidden);                    
                     FileStream f3 = File.Open("currentLogin.txt", FileMode.OpenOrCreate);
-                    //File.SetAttributes(f3.Name, FileAttributes.Hidden);
+                    File.SetAttributes(f3.Name, FileAttributes.Hidden);
                     f1.Close();
                     f2.Close();
                     f3.Close();
@@ -250,11 +259,24 @@ namespace xddddd
             {
                 MessageBox.Show(e.Message);
             }
+            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
+        }
+        //mikor bezárja a programot, visszarejti a fájlokat
+        public static void OnExit()
+        {
+            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
         }
         //megnézi, hogy szerepel-e a fiókok közt a megadott felhasználónév és jelszó, majd ha igen, elmenti melyik
         //a messageboxhoz ne nyúlj, az mindig true, kivéve mikor regisztrál és automatikusan bejelentkezik
         public static void Login(string username, string password, bool doLoginPopup = true)
         {
+            File.SetAttributes("userData.txt", FileAttributes.Normal);
+            File.SetAttributes("keys.txt", FileAttributes.Normal);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
             try
             {
                 bool isLoginSuccessful = false;
@@ -278,7 +300,7 @@ namespace xddddd
                         {
                             MessageBox.Show("Sikeres bejelentkezés: " + user.UserName);
                         }
-                        File.WriteAllText("currentLogin.txt", (user.ID + ";" + EncryptString(user.UserName, user.unKey) + ";" + EncryptString(user.Password, user.pwKey) + ";" + EncryptString(user.Email.Split('@', '.')[0], user.emKey.Split('@', '.')[0], 0) + "@" + EncryptString(user.Email.Split('@', '.')[1], user.emKey.Split('@', '.')[1], 1) + "." + EncryptString(user.Email.Split('@', '.')[2], user.emKey.Split('@', '.')[2], 2) + ";" + user.unKey + ";" + user.pwKey + ";" + user.emKey + ";" + user.Perms + ";"));
+                        File.WriteAllText("currentLogin.txt", user.ID + ";" + EncryptString(user.UserName, user.unKey) + ";" + EncryptString(user.Password, user.pwKey) + ";" + EncryptString(user.Email.Split('@', '.')[0], user.emKey.Split('@', '.')[0], 0) + "@" + EncryptString(user.Email.Split('@', '.')[1], user.emKey.Split('@', '.')[1], 1) + "." + EncryptString(user.Email.Split('@', '.')[2], user.emKey.Split('@', '.')[2], 2) + ";" + user.unKey + ";" + user.pwKey + ";" + user.emKey + ";" + user.Perms + ";");
                         isLoginSuccessful = true;
                     }
                 }
@@ -291,10 +313,16 @@ namespace xddddd
             {
                 MessageBox.Show(e.Message);
             }
+            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
         }
         //kijelentkezik a jelenlegi fiókból, az onDeletion az mindig false kivéve a törlő functionnek
         public static void LogOut(bool onDeletion = false)
         {
+            File.SetAttributes("userData.txt", FileAttributes.Normal);
+            File.SetAttributes("keys.txt", FileAttributes.Normal);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
             try
             {
                 if (currUser != null)
@@ -323,10 +351,16 @@ namespace xddddd
             {
                 MessageBox.Show(e.Message);
             }
+            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
         }
         //eltávolít egy fiókot
         public static bool DeleteUser([Optional] string deleteableUser)
         {
+            File.SetAttributes("userData.txt", FileAttributes.Normal);
+            File.SetAttributes("keys.txt", FileAttributes.Normal);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
             User tempUser = null;
             try
             {
@@ -407,6 +441,9 @@ namespace xddddd
                 currUser = tempUser;
                 return false;
             }
+            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
         }
         //titkosít egy stringet
         private protected static string EncryptString(string pw, string key, [Optional] int a)
@@ -828,6 +865,9 @@ namespace xddddd
             }
             private void button_Clicked(object sender, RoutedEventArgs e)
             {
+                File.SetAttributes("userData.txt", FileAttributes.Normal);
+                File.SetAttributes("keys.txt", FileAttributes.Normal);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                 try
                 {
                     if (currUser.Perms == "a")
@@ -946,6 +986,9 @@ namespace xddddd
                 {
                     MessageBox.Show(ex.Message);
                 }
+                File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
             }
             private void button2_Clicked(object sender, RoutedEventArgs e)
             {
@@ -987,6 +1030,9 @@ namespace xddddd
             }
             private void ComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
             {
+                File.SetAttributes("userData.txt", FileAttributes.Normal);
+                File.SetAttributes("keys.txt", FileAttributes.Normal);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                 try
                 {
                     if (grid.SelectedItem == null || string.IsNullOrEmpty(grid.SelectedItem.ToString()))
@@ -1030,6 +1076,9 @@ namespace xddddd
                         MessageBox.Show(ex.Message);
                     }
                 }
+                File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
             }
             private void tb_TextChanged(object sender, TextChangedEventArgs e)
             {
@@ -1058,6 +1107,9 @@ namespace xddddd
             }
             private void tb1_LostFocus(object sender, RoutedEventArgs e)
             {
+                File.SetAttributes("userData.txt", FileAttributes.Normal);
+                File.SetAttributes("keys.txt", FileAttributes.Normal);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                 try
                 {
                     if (currUser.ID != "0" && grid.SelectedIndex == 0)
@@ -1158,7 +1210,9 @@ namespace xddddd
                 {
                     grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 }
-
+                File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
             }
             private void tb2_GotFocus(object sender, RoutedEventArgs e)
             {
@@ -1180,6 +1234,9 @@ namespace xddddd
             }
             private void tb2_LostFocus(object sender, RoutedEventArgs e)
             {
+                File.SetAttributes("userData.txt", FileAttributes.Normal);
+                File.SetAttributes("keys.txt", FileAttributes.Normal);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                 try
                 {
                     if (currUser.ID != "0" && grid.SelectedIndex == 0)
@@ -1316,6 +1373,9 @@ namespace xddddd
                 {
                     grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 }
+                File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
             }
         }
     }

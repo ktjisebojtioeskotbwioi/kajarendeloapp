@@ -48,6 +48,7 @@ namespace xddddd
         }
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
+            User.OnExit();
             Environment.Exit(0);
         }
     }
