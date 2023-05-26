@@ -58,7 +58,7 @@ namespace xddddd
         public User(string username, string password, string email, string perms = "n")
         {
             try
-            {              
+            {
                 if (username != string.Empty && password != string.Empty)
                 {
                     //megnézi, hogy csak megfelelő karakterek szerepelnek-e benne
@@ -168,7 +168,7 @@ namespace xddddd
                     else
                     {
                         File.AppendAllText("userData.txt", "\r\n" + ID + ";" + EncryptString(UserName, unKey) + ";" + EncryptString(Password, pwKey) + ";" + EncryptString(Email.Split('@', '.')[0], emKey.Split('@', '.')[0]) + "@" + EncryptString(Email.Split('@', '.')[1], emKey.Split('@', '.')[1]) + "." + EncryptString(Email.Split('@', '.')[2], emKey.Split('@', '.')[2]) + ";");
-                        File.AppendAllText("keys.txt", "\r\n" + ID + ";" + unKey + ";" + pwKey + ";" + emKey + ";" + Perms + ";");                        
+                        File.AppendAllText("keys.txt", "\r\n" + ID + ";" + unKey + ";" + pwKey + ";" + emKey + ";" + Perms + ";");
                         Login(UserName, Password, false);
                         MessageBox.Show("Sikeres regisztráció!\nBeléptél ezzel a fiókkal: " + currUser.UserName);
                     }
@@ -329,7 +329,7 @@ namespace xddddd
         {
             User tempUser = null;
             try
-            {               
+            {
                 bool l = false;
                 if (deleteableUser == userList[0].UserName)
                 {
@@ -396,7 +396,7 @@ namespace xddddd
                 else
                 {
                     throw new Exception("Jelentkezz be, mielőtt törölni akarsz egy fiókot!");
-                }                
+                }
             }
             catch (Exception e)
             {
@@ -498,10 +498,10 @@ namespace xddddd
                     new GridBox(1);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-            }            
+            }
         }
         //netről lopott class egy text bemenetes messageboxra, kicsit átalakítva lol
         internal class InputBox : Window
@@ -669,11 +669,10 @@ namespace xddddd
             private DataGridTextColumn IDColumn = new DataGridTextColumn() { Header = "ID", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn userNameColumn = new DataGridTemplateColumn() { Header = "Felhasználónév", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn passwordColumn = new DataGridTemplateColumn() { Header = "Jelszó", Width = DataGridLength.Auto, IsReadOnly = true };
-            private DataGridTemplateColumn emailColumn = new DataGridTemplateColumn() { Header = "Email cím", Width = DataGridLength.Auto , IsReadOnly = true };
+            private DataGridTemplateColumn emailColumn = new DataGridTemplateColumn() { Header = "Email cím", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn permsColumn = new DataGridTemplateColumn() { Header = "Jogosultságok", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn deleteColumn = new DataGridTemplateColumn() { Header = "Fiók törlése", Width = DataGridLength.Auto, IsReadOnly = true };
             private static string currentCellValue = "";
-            private int isFirstRun = 0;
             internal GridBox(int x)
             {
                 window.Width = 510;
@@ -686,9 +685,9 @@ namespace xddddd
                 grid.Height = 300;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
-                grid.SetBinding(DataGrid.SelectedItemProperty, new Binding("currentString") { Source = grid, Mode = BindingMode.OneWayToSource});
+                grid.SetBinding(DataGrid.SelectedItemProperty, new Binding("currentString") { Source = grid, Mode = BindingMode.OneWayToSource });
                 grid.DataContext = userList;
-                grid.ItemsSource = userList;                                
+                grid.ItemsSource = userList;
                 switch (x)
                 {
                     case 0:
@@ -702,12 +701,12 @@ namespace xddddd
                 }
                 grid.HorizontalAlignment = HorizontalAlignment.Left;
                 panel.Children.Add(grid);
-                window.Content = panel;                
+                window.Content = panel;
                 window.Show();
             }
             private void grid_Loaded_0(object sender, RoutedEventArgs e)
             {
-                window.Title = "Fiókok beállításainak módosítása (Felhasználó:"+ currUser.UserName + ")";
+                window.Title = "Fiókok beállításainak módosítása (Felhasználó:" + currUser.UserName + ")";
                 Binding b = new Binding();
                 b.Mode = BindingMode.TwoWay;
                 b.ValidatesOnExceptions = true;
@@ -723,9 +722,10 @@ namespace xddddd
                 tb1.SetValue(TextBox.BackgroundProperty, Brushes.Beige);
                 tb1.AddHandler(TextBox.GotFocusEvent, new RoutedEventHandler(tb1_GotFocus));
                 tb1.AddHandler(TextBox.LostFocusEvent, new RoutedEventHandler(tb1_LostFocus));
+                tb1.AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(tb_TextChanged));
                 dtt.VisualTree = tb1;
                 userNameColumn.CellTemplate = dtt;
-                
+
                 dtt = new DataTemplate();
                 FrameworkElementFactory button = new FrameworkElementFactory(typeof(Button));
                 button.AddHandler(Button.ClickEvent, new RoutedEventHandler(button_Clicked));
@@ -734,22 +734,23 @@ namespace xddddd
                 passwordColumn.CellTemplate = dtt;
 
                 b = new Binding("Email");
-                dtt = new DataTemplate();                
+                dtt = new DataTemplate();
                 tb2.SetBinding(TextBox.TextProperty, b);
                 tb2.SetValue(TextBox.BackgroundProperty, Brushes.Beige);
                 tb2.AddHandler(TextBox.GotFocusEvent, new RoutedEventHandler(tb2_GotFocus));
                 tb2.AddHandler(LostFocusEvent, new RoutedEventHandler(tb2_LostFocus));
+                tb2.AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler(tb_TextChanged));
                 dtt.VisualTree = tb2;
                 emailColumn.CellTemplate = dtt;
-                
+
                 if (currUser.ID == "0")
                 {
                     b = new Binding() { Path = new PropertyPath("Perms"), Mode = BindingMode.OneWay };
                     dtt = new DataTemplate();
-                    FrameworkElementFactory comboBox1 = new FrameworkElementFactory(typeof(ComboBox));
-                    comboBox1.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBoxSelectionChanged));
+                    FrameworkElementFactory comboBox1 = new FrameworkElementFactory(typeof(ComboBox));                    
                     comboBox1.SetValue(ComboBox.ItemsSourceProperty, new string[] { "a", "n" });
                     comboBox1.SetValue(ComboBox.SelectedItemProperty, b);
+                    comboBox1.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBoxSelectionChanged));
                     dtt.VisualTree = comboBox1;
                     permsColumn.CellTemplate = dtt;
                 }
@@ -780,14 +781,14 @@ namespace xddddd
             }
             private void grid_Loaded_1(object sender, RoutedEventArgs e)
             {
-                window.Title = "Fiók adatainak módosítása (Felhasználó:"+ currUser.UserName + ")";
+                window.Title = "Fiók adatainak módosítása (Felhasználó:" + currUser.UserName + ")";
                 grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 Binding b = new Binding();
                 b.Mode = BindingMode.TwoWay;
                 b.ValidatesOnExceptions = true;
                 b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
                 DataTemplate dtt = new DataTemplate();
-                              
+
                 b = new Binding("UserName");
                 dtt = new DataTemplate();
                 tb1.SetBinding(TextBox.TextProperty, b);
@@ -884,7 +885,7 @@ namespace xddddd
                         {
                             throw new Exception("Nem megfelelő jelszót adtál meg.");
                         }
-                    }                   
+                    }
                     else
                     {
                         if (currUser.Password == new InputBox("Add meg a jelszót ismét", "Megerősítés", "Arial", 16).ShowDialog())
@@ -959,8 +960,7 @@ namespace xddddd
                         if (currUser.Perms == "a" && userList[grid.SelectedIndex].ID == currUser.ID || currUser.ID == "0" || userList[grid.SelectedIndex].Perms == "n")
                         {
                             if (DeleteUser(userList[grid.SelectedIndex].ID))
-                            {
-                                isFirstRun = 0;
+                            {                                
                                 currentCellValue = "";
                                 grid.ItemsSource = null;
                                 grid.ItemsSource = userList;
@@ -974,7 +974,6 @@ namespace xddddd
                     else
                     {
                         DeleteUser();
-                        isFirstRun = 0;
                         window.Close();
                     }
                 }
@@ -985,21 +984,21 @@ namespace xddddd
                         MessageBox.Show(ex.Message);
                     }
                 }
-
             }
             private void ComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
             {
                 try
                 {
+                    if (grid.SelectedItem == null || string.IsNullOrEmpty(grid.SelectedItem.ToString()))
+                    {
+                        throw new Exception("");
+                    }
                     if (grid.SelectedIndex == 0)
                     {
                         throw new Exception("Nem módosíthatod a saját jogosultságaidat.");
-                    }
-                    if (isFirstRun < 2)
-                    {
-                        isFirstRun++;
-                        throw new Exception("");
-                    }
+                        ((ComboBox)sender).SelectedItem = "a";
+                        
+                    }                   
                     ComboBox comboBox = sender as ComboBox;
                     if (comboBox != null)
                     {
@@ -1024,12 +1023,19 @@ namespace xddddd
                         MessageBox.Show("Sikeres módosítások.");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if (ex.Message != string.Empty)
+                    if (!string.IsNullOrEmpty(ex.Message))
                     {
                         MessageBox.Show(ex.Message);
-                    }                    
+                    }
+                }
+            }
+            private void tb_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                if (currUser.ID != "0" && grid.SelectedIndex == 0)
+                {
+                    ((TextBox)sender).Text = currentCellValue;
                 }
             }
             private void tb1_GotFocus(object sender, RoutedEventArgs e)
@@ -1040,8 +1046,7 @@ namespace xddddd
                     {
                         throw new Exception("Nem módosíthatod ezt a fiókot.");
                     }
-                    TextBox a = (TextBox)sender;
-                    currentCellValue = a.Text;
+                    currentCellValue = ((TextBox)sender).Text;
                 }
                 catch (Exception ex)
                 {
@@ -1136,7 +1141,7 @@ namespace xddddd
                     }
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     tb1 = new FrameworkElementFactory(typeof(TextBox)) { Text = currentCellValue };
                     if (ex.Message != string.Empty)
@@ -1153,7 +1158,6 @@ namespace xddddd
                 {
                     grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 }
-                isFirstRun = 0;
 
             }
             private void tb2_GotFocus(object sender, RoutedEventArgs e)
@@ -1164,17 +1168,16 @@ namespace xddddd
                     {
                         throw new Exception("Nem módosíthatod ezt a fiókot.");
                     }
-                    TextBox a = (TextBox)sender;
-                    currentCellValue = a.Text;
+                    currentCellValue = ((TextBox)sender).Text;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (ex.Message != null)
                     {
                         MessageBox.Show(ex.Message);
                     }
                 }
-            }  
+            }
             private void tb2_LostFocus(object sender, RoutedEventArgs e)
             {
                 try
@@ -1183,12 +1186,12 @@ namespace xddddd
                     {
                         throw new Exception("");
                     }
-                    TextBox a = (TextBox)sender;   
+                    TextBox a = (TextBox)sender;
                     if (a.Text == currentCellValue)
                     {
                         throw new Exception("");
                     }
-                    if (isEmailAddress(a.Text) &&currUser.Perms == "a")
+                    if (isEmailAddress(a.Text) && currUser.Perms == "a")
                     {
                         string key = "";
                         int len = 0;
@@ -1247,7 +1250,7 @@ namespace xddddd
                         for (int i = 0; i < n.Length; i++)
                         {
                             len = 0;
-                            if (n[i].Length<1)
+                            if (n[i].Length < 1)
                             {
                                 throw new Exception("Adj meg email címet!");
                             }
@@ -1295,9 +1298,9 @@ namespace xddddd
                         throw new Exception("Nem megfelelő email cím formátum.\n\nHelyes formátum: x@y.z");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    tb2 = new FrameworkElementFactory(typeof(TextBox)) { Text = currentCellValue};
+                    tb2 = new FrameworkElementFactory(typeof(TextBox)) { Text = currentCellValue };
                     if (ex.Message != string.Empty)
                     {
                         MessageBox.Show(ex.Message);
@@ -1305,14 +1308,13 @@ namespace xddddd
                 }
                 currentCellValue = "";
                 grid.ItemsSource = null;
-                isFirstRun = 0;
                 if (currUser.Perms == "a")
                 {
                     grid.ItemsSource = userList;
                 }
                 else
                 {
-                    grid.ItemsSource = userList.Where(x => x.ID ==  currUser.ID);
+                    grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 }
             }
         }

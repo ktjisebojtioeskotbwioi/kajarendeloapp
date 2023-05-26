@@ -1,18 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
 
 
 namespace xddddd
@@ -46,7 +34,7 @@ namespace xddddd
 
         private void regButton_Click(object sender, RoutedEventArgs e)
         {
-            new User(unBox.Text, pwBox.Password, emailBox.Text );
+            new User(unBox.Text, pwBox.Password, emailBox.Text);
         }
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
@@ -62,5 +50,5 @@ namespace xddddd
         {
             Environment.Exit(0);
         }
-    }   
+    }
 }
