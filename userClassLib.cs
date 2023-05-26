@@ -325,11 +325,11 @@ namespace xddddd
             }
         }
         //eltávolít egy fiókot
-        public static void DeleteUser([Optional] string deleteableUser)
+        public static bool DeleteUser([Optional] string deleteableUser)
         {
+            User tempUser = null;
             try
-            {
-                User tempUser = null;
+            {               
                 bool l = false;
                 if (deleteableUser == userList[0].UserName)
                 {
@@ -381,7 +381,16 @@ namespace xddddd
                             GetUsers();
                             currUser = tempUser;
                             MessageBox.Show("Fiók törölve.");
+                            return true;
                         }
+                        else
+                        {
+                            throw new Exception("");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("");
                     }
                 }
                 else
@@ -391,7 +400,12 @@ namespace xddddd
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                if (e.Message != string.Empty)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                currUser = tempUser;
+                return false;
             }
         }
         //titkosít egy stringet
@@ -506,12 +520,11 @@ namespace xddddd
             string cancelbuttontext = "Mégse";
             Brush BoxBackgroundColor = Brushes.Beige;// Window Background
             Brush InputBackgroundColor = Brushes.White;// Textbox Background
-            bool clicked = false;
+            //bool clicked = false;
             PasswordBox input = new PasswordBox();
             Button ok = new Button();
             Button cancel = new Button();
             bool inputreset = false;
-
             internal protected InputBox(string content)
             {
                 try
@@ -521,7 +534,6 @@ namespace xddddd
                 catch { boxcontent = "Error!"; }
                 windowdef();
             }
-
             internal protected InputBox(string content, string Htitle, string DefaultText)
             {
                 try
@@ -547,7 +559,6 @@ namespace xddddd
                 }
                 windowdef();
             }
-
             internal protected InputBox(string content, string Htitle, string Font, int Fontsize)
             {
                 try
@@ -572,7 +583,6 @@ namespace xddddd
                     FontSize = Fontsize;
                 windowdef();
             }
-
             private void windowdef()
             {
                 Box.Height = 150;
@@ -612,13 +622,11 @@ namespace xddddd
                 sp1.Children.Add(cancel);
 
             }
-
             private void Box_Closing(object sender, System.ComponentModel.CancelEventArgs e)
             {
                 /*if (!clicked)
                     e.Cancel = true;*/
             }
-
             private void input_MouseDown(object sender, MouseEventArgs e)
             {
                 if ((sender as PasswordBox).Password == defaulttext && inputreset == false)
@@ -631,19 +639,19 @@ namespace xddddd
             {
                 Box.Close();
             }
-
             private void ok_Click(object sender, RoutedEventArgs e)
             {
-                clicked = true;
+                //clicked = true;
                 if (input.Password == defaulttext || input.Password == "")
+                {
                     MessageBox.Show(errormessage, errortitle);
+                }
                 else
                 {
                     Box.Close();
                 }
-                clicked = false;
+                //clicked = false;
             }
-
             new internal protected string ShowDialog()
             {
                 Box.ShowDialog();
@@ -948,11 +956,20 @@ namespace xddddd
                     }
                     if (currUser.Perms == "a")
                     {
-                        DeleteUser(userList[grid.SelectedIndex].ID);
-                        isFirstRun = 0;
-                        currentCellValue = "";
-                        grid.ItemsSource = null;
-                        grid.ItemsSource = userList;
+                        if (currUser.Perms == "a" && userList[grid.SelectedIndex].ID == currUser.ID || currUser.ID == "0" || userList[grid.SelectedIndex].Perms == "n")
+                        {
+                            if (DeleteUser(userList[grid.SelectedIndex].ID))
+                            {
+                                isFirstRun = 0;
+                                currentCellValue = "";
+                                grid.ItemsSource = null;
+                                grid.ItemsSource = userList;
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Nem törölhetsz másik admin fiókot!");
+                        }
                     }
                     else
                     {
@@ -1157,8 +1174,7 @@ namespace xddddd
                         MessageBox.Show(ex.Message);
                     }
                 }
-            }
-            
+            }  
             private void tb2_LostFocus(object sender, RoutedEventArgs e)
             {
                 try
