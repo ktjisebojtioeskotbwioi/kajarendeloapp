@@ -2,7 +2,9 @@
 kaja rendelgetős applikációcska
 
 User class 
+
 ↓↓↓↓↓↓↓↓↓
+
 user tulajdonságai/függvényei: 
 - currUser: eltárolja a jelenleg bejelentkezett felhasználót
 - userList: ebben van az összes fiók
@@ -22,7 +24,9 @@ user tulajdonságai/függvényei:
 - private User konstruktor: beolvas egy fiókot
 - public static void GetUsers: beolvassa a fájlból a usereket és berakja a userList-be őket, ha nincs fájl, akkor pedig csinál egyet és generál egy admin fiókot (!!! fontos, ezt az initializecomponent után muszáj odaírni)
 - public static void OnExit: kilépéskor hiddeneli a fájlokat, ezt implementálni kell a mainwindow fájlban 
+
   ↓↓↓↓↓↓↓↓↓
+  
   protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
   {
      User.OnExit();
@@ -38,11 +42,15 @@ user tulajdonságai/függvényei:
 - public static void EditUser: jogosultság alapján megnyit egy másik ablakot, amiben módosítani lehet az adatokat
 
 InputBox class
+
 ↓↓↓↓↓↓↓↓↓
+
 netről szedtem és átírtam, megjelenít egy ablakot, ahol meg lehet adni egy jelszót
 
 GridBox class
+
 ↓↓↓↓↓↓↓↓↓
+
 ezt már én csináltam teljesen, a grid az alap usereknek négy oszlopos és csak saját magukat látják, az adminoknak 6 és látnak/tudnak módosítani minden alap usert
 - konstruktor: legenerál egy ablakot egy griddel
 - grid_Loaded_0 és grid_Loaded_1: jogosultság alapján generálja le a gridet (az eredeti account mindent módosíthat, a sima admin minden alap usert és magát, az alap user pedig csak magát)
