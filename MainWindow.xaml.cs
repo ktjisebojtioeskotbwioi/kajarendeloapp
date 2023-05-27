@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 
-namespace xddddd
+namespace kajarendeloapp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

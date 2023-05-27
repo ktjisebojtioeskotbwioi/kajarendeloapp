@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace xddddd
+namespace kajarendeloapp
 {
     //felhasználó class
     public class User
