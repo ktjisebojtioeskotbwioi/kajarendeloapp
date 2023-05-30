@@ -25,7 +25,7 @@ namespace kajarendeloapp
 
         private void regButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            Close();
         }
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
