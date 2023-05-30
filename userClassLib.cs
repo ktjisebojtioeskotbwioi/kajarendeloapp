@@ -186,7 +186,7 @@ namespace kajarendeloapp
                             Login(UserName, Password, false);
                             MessageBox.Show("Sikeres regisztráció!\nBeléptél ezzel a fiókkal: " + currUser.UserName);
                         }
-                    }                    
+                    }
                 }
                 else
                 {
@@ -232,7 +232,7 @@ namespace kajarendeloapp
                 {
                     File.SetAttributes("userData.txt", FileAttributes.Normal);
                     File.SetAttributes("keys.txt", FileAttributes.Normal);
-                    File.SetAttributes("currentLogin.txt", FileAttributes.Normal);                   
+                    File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                     string[] x = File.ReadAllLines("userData.txt");
                     string[] y = File.ReadAllLines("keys.txt");
                     string[] z = File.ReadAllLines("currentLogin.txt");
@@ -261,7 +261,7 @@ namespace kajarendeloapp
                     FileStream f1 = File.Open("userData.txt", FileMode.OpenOrCreate);
                     File.SetAttributes(f1.Name, FileAttributes.Hidden);
                     FileStream f2 = File.Open("keys.txt", FileMode.OpenOrCreate);
-                    File.SetAttributes(f2.Name, FileAttributes.Hidden);                    
+                    File.SetAttributes(f2.Name, FileAttributes.Hidden);
                     FileStream f3 = File.Open("currentLogin.txt", FileMode.OpenOrCreate);
                     File.SetAttributes(f3.Name, FileAttributes.Hidden);
                     f1.Close();
@@ -383,7 +383,7 @@ namespace kajarendeloapp
         }
         //eltávolít egy fiókot
         private protected static bool DeleteUser([Optional] string deleteableUser)
-        {           
+        {
             User tempUser = null;
             try
             {
@@ -814,7 +814,7 @@ namespace kajarendeloapp
                 {
                     b = new Binding() { Path = new PropertyPath("Perms"), Mode = BindingMode.OneWay };
                     dtt = new DataTemplate();
-                    FrameworkElementFactory comboBox1 = new FrameworkElementFactory(typeof(ComboBox));                    
+                    FrameworkElementFactory comboBox1 = new FrameworkElementFactory(typeof(ComboBox));
                     comboBox1.SetValue(ComboBox.ItemsSourceProperty, new string[] { "a", "n" });
                     comboBox1.SetValue(ComboBox.SelectedItemProperty, b);
                     comboBox1.AddHandler(ComboBox.SelectionChangedEvent, new SelectionChangedEventHandler(ComboBoxSelectionChanged));
@@ -894,7 +894,7 @@ namespace kajarendeloapp
                 grid.Columns.Add(deleteColumn);
             }
             private void button_Clicked(object sender, RoutedEventArgs e)
-            {                
+            {
                 try
                 {
                     if (currUser.Perms == "a")
@@ -1048,7 +1048,7 @@ namespace kajarendeloapp
                         if (currUser.Perms == "a" && userList[grid.SelectedIndex].ID == currUser.ID || currUser.ID == "0" || userList[grid.SelectedIndex].Perms == "n")
                         {
                             if (DeleteUser(userList[grid.SelectedIndex].ID))
-                            {                                
+                            {
                                 currentCellValue = "";
                                 grid.ItemsSource = null;
                                 grid.ItemsSource = userList;
@@ -1077,7 +1077,7 @@ namespace kajarendeloapp
                 }
             }
             private void ComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
-            {               
+            {
                 try
                 {
                     if (grid.SelectedItem == null || string.IsNullOrEmpty(grid.SelectedItem.ToString()))
@@ -1088,8 +1088,8 @@ namespace kajarendeloapp
                     {
                         ((ComboBox)sender).SelectedItem = "a";
                         throw new Exception("Nem módosíthatod a saját jogosultságaidat.");
-                        
-                    }                   
+
+                    }
                     ComboBox comboBox = sender as ComboBox;
                     if (comboBox != null)
                     {
@@ -1160,7 +1160,7 @@ namespace kajarendeloapp
                 }
             }
             private void tb1_LostFocus(object sender, RoutedEventArgs e)
-            {                
+            {
                 try
                 {
                     if (currUser.ID != "0" && currUser.Perms == "a" && grid.SelectedIndex == 0)
@@ -1296,7 +1296,7 @@ namespace kajarendeloapp
                 }
             }
             private void tb2_LostFocus(object sender, RoutedEventArgs e)
-            {                
+            {
                 try
                 {
                     if (currUser.ID != "0" && currUser.Perms == "a" && grid.SelectedIndex == 0)
