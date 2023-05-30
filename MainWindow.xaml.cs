@@ -16,17 +16,6 @@ namespace kajarendeloapp
             InitializeComponent();
             User.GetUsers();
         }
-
-        private void unBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void pwBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             User.Login(unBox.Text, pwBox.Password);

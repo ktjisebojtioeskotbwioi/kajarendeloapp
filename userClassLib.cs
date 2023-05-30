@@ -57,9 +57,6 @@ namespace kajarendeloapp
         //felhasználó hozzáadó konstruktor (regisztráció)
         public User(string username, string password, string email, string perms = "n")
         {
-            File.SetAttributes("userData.txt", FileAttributes.Normal);
-            File.SetAttributes("keys.txt", FileAttributes.Normal);
-            File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
             try
             {
                 if (username != string.Empty && password != string.Empty)
@@ -89,9 +86,15 @@ namespace kajarendeloapp
                         {
                             perms = "a";
                         }
-                    }                    
+                    }
+                    File.SetAttributes("userData.txt", FileAttributes.Normal);
+                    File.SetAttributes("keys.txt", FileAttributes.Normal);
+                    File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                     string[] x = File.ReadAllLines("userData.txt");
                     string[] y = File.ReadAllLines("keys.txt");
+                    File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                    File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                    File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
                     for (int i = 0; i < x.Count(); i++)
                     {
                         if (DecryptString(x[i].Split(';')[1], y[i].Split(';')[1]) == username)
@@ -119,7 +122,7 @@ namespace kajarendeloapp
                     }
                     userName = username;
                     PW = password;
-                    id = File.ReadAllLines("userData.txt").Length.ToString();
+                    id = x.Length.ToString();
                     this.perms = perms;
                     //megnézi, hogy valid-e az email cím és generál hozzá egy random titkosítási kulcsot, ha meg van adva
                     if (email == string.Empty)
@@ -157,12 +160,15 @@ namespace kajarendeloapp
                         catch
                         {
 
-                            throw new Exception("Nem megfelelő email cím formátum.\\n\\nHelyes formátum: x@y.z");
+                            throw new Exception("Nem megfelelő email cím formátum.\n\nHelyes formátum: x@y.z");
                         }
                     }
                     //hozzáadja a user listához
                     userList.Add(this);
-                    //beírja az új elemet a txt fájlba                 
+                    //beírja az új elemet a txt fájlba
+                    File.SetAttributes("userData.txt", FileAttributes.Normal);
+                    File.SetAttributes("keys.txt", FileAttributes.Normal);
+                    File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                     if (ID == "0" || File.ReadAllLines("userData.txt")[File.ReadAllLines("userData.txt").Length - 1] == "Deleted;")
                     {
                         File.AppendAllText("userData.txt", ID + ";" + EncryptString(UserName, unKey) + ";" + EncryptString(Password, pwKey) + ";" + EncryptString(Email.Split('@', '.')[0], emKey.Split('@', '.')[0]) + "@" + EncryptString(Email.Split('@', '.')[1], emKey.Split('@', '.')[1]) + "." + EncryptString(Email.Split('@', '.')[2], emKey.Split('@', '.')[2]) + ";");
@@ -173,8 +179,11 @@ namespace kajarendeloapp
                         File.AppendAllText("userData.txt", "\r\n" + ID + ";" + EncryptString(UserName, unKey) + ";" + EncryptString(Password, pwKey) + ";" + EncryptString(Email.Split('@', '.')[0], emKey.Split('@', '.')[0]) + "@" + EncryptString(Email.Split('@', '.')[1], emKey.Split('@', '.')[1]) + "." + EncryptString(Email.Split('@', '.')[2], emKey.Split('@', '.')[2]) + ";");
                         File.AppendAllText("keys.txt", "\r\n" + ID + ";" + unKey + ";" + pwKey + ";" + emKey + ";" + Perms + ";");
                         Login(UserName, Password, false);
+                        File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                        File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                        File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
                         MessageBox.Show("Sikeres regisztráció!\nBeléptél ezzel a fiókkal: " + currUser.UserName);
-                    }
+                    }                    
                 }
                 else
                 {
