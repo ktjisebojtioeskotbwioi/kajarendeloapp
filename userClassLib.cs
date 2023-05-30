@@ -748,7 +748,7 @@ namespace kajarendeloapp
                 grid.Background = Brushes.Cornsilk;
                 grid.RowBackground = Brushes.Beige;
                 grid.AutoGenerateColumns = false;
-                grid.Width = 500;
+                grid.Width = 1000;
                 grid.Height = 300;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
