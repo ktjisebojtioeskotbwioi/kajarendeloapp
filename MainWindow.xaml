@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:kajarendeloapp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Bejelentkezés" Height="183" Width="325" Background="Beige">
     <Grid>
-        <TextBox x:Name="unBox" HorizontalAlignment="Left" Height="21" Margin="45,43,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="115"/>
-        <PasswordBox x:Name="pwBox" HorizontalAlignment="Left" Margin="45,69,0,0" VerticalAlignment="Top" Width="115" Height="21"/>
-        <Button x:Name="regButton" Content="Regisztráció" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="75" Click="regButton_Click"/>
-        <Button x:Name="loginButton" Content="Bejelentkezés" HorizontalAlignment="Left" Margin="90,120,0,0" VerticalAlignment="Top" Width="75" Click="loginButton_Click"/>
-        <Button x:Name="logoutButton" Content="Kijelentkezés" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="75" Click="logoutButton_Click"/>
-        <TextBox x:Name="emailBox" HorizontalAlignment="Left" Height="21" Margin="165,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="editButton" Content="Módosítás" HorizontalAlignment="Left" Margin="90,150,0,0" VerticalAlignment="Top" Width="75" Click="editButton_Click"/>
+        <TextBox x:Name="unBox" HorizontalAlignment="Center" Height="21" Margin="0,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115"/>
+        <PasswordBox x:Name="pwBox" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Width="115" Height="21"/>
+        <Button x:Name="regButton" Content="Regisztráció" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Click="regButton_Click" Margin="0,111,0,0"/>
+        <Button x:Name="loginButton" Content="Bejelentkezés" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Click="loginButton_Click" Margin="0,88,0,0"/>
+        <Label x:Name="usernamelabel" Content="Felhasználónév" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="emailcimlabel" Content="E-mail cím" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Label Content="Jelszó" HorizontalAlignment="Left" Margin="59,36,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox1" Content="E-mail cím használata" HorizontalAlignment="Center" Margin="0,66,0,0" VerticalAlignment="Top" Checked="checkBox1_Changed" Unchecked="checkBox1_Changed"/>
     </Grid>
 </Window>

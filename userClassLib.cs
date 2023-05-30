@@ -293,23 +293,36 @@ namespace kajarendeloapp
         //megnézi, hogy szerepel-e a fiókok közt a megadott felhasználónév és jelszó, majd ha igen, elmenti melyik
         //a messageboxhoz ne nyúlj, az mindig true, kivéve mikor regisztrál és automatikusan bejelentkezik
         public static void Login(string username, string password, bool doLoginPopup = true)
-        {
-            File.SetAttributes("userData.txt", FileAttributes.Normal);
-            File.SetAttributes("keys.txt", FileAttributes.Normal);
-            File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
+        {            
             try
             {
                 bool isLoginSuccessful = false;
-                if (currUser != null && username == currUser.UserName)
+                if (isEmailAddress(username))
                 {
-                    throw new Exception("Már be vagy jelentkezve ezzel a fiókkal!");
+                    if (currUser != null && username == currUser.Email)
+                    {
+                        throw new Exception("Már be vagy jelentkezve ezzel a fiókkal!");
+                    }
                 }
+                else
+                {
+                    if (currUser != null && username == currUser.UserName)
+                    {
+                        throw new Exception("Már be vagy jelentkezve ezzel a fiókkal!");
+                    }
+                }                
                 foreach (User user in userList)
                 {
-                    if (user.UserName == username && user.Password == password && user.UserName != "Deleted;")
+                    if (user.UserName == username || user.Email == username && user.Password == password && user.UserName != "Deleted;")
                     {
+                        File.SetAttributes("userData.txt", FileAttributes.Normal);
+                        File.SetAttributes("keys.txt", FileAttributes.Normal);
+                        File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                         if (File.ReadAllLines("currentLogin.txt").Length != 0 && doLoginPopup)
                         {
+                            File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                            File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
                             if (MessageBox.Show("Biztosan be akarsz lépni egy másik fiókkal?", "Megerősítés", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                             {
                                 return;
@@ -320,7 +333,13 @@ namespace kajarendeloapp
                         {
                             MessageBox.Show("Sikeres bejelentkezés: " + user.UserName);
                         }
+                        File.SetAttributes("userData.txt", FileAttributes.Normal);
+                        File.SetAttributes("keys.txt", FileAttributes.Normal);
+                        File.SetAttributes("currentLogin.txt", FileAttributes.Normal);
                         File.WriteAllText("currentLogin.txt", user.ID + ";" + EncryptString(user.UserName, user.unKey) + ";" + EncryptString(user.Password, user.pwKey) + ";" + EncryptString(user.Email.Split('@', '.')[0], user.emKey.Split('@', '.')[0], 0) + "@" + EncryptString(user.Email.Split('@', '.')[1], user.emKey.Split('@', '.')[1], 1) + "." + EncryptString(user.Email.Split('@', '.')[2], user.emKey.Split('@', '.')[2], 2) + ";" + user.unKey + ";" + user.pwKey + ";" + user.emKey + ";" + user.Perms + ";");
+                        File.SetAttributes("userData.txt", FileAttributes.Hidden);
+                        File.SetAttributes("keys.txt", FileAttributes.Hidden);
+                        File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
                         isLoginSuccessful = true;
                     }
                 }
@@ -336,9 +355,6 @@ namespace kajarendeloapp
                 File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
                 MessageBox.Show(e.Message);
             }
-            File.SetAttributes("userData.txt", FileAttributes.Hidden);
-            File.SetAttributes("keys.txt", FileAttributes.Hidden);
-            File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
         }
         //kijelentkezik a jelenlegi fiókból, az onDeletion az mindig false kivéve a törlő functionnek
         public static void LogOut(bool onDeletion = false)

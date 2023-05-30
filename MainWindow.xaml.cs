@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace kajarendeloapp
 {
@@ -8,11 +9,14 @@ namespace kajarendeloapp
     /// </summary>
     public partial class MainWindow : Window
     {
-        //static bool isFirstRun = true;
         public MainWindow()
         {
             InitializeComponent();
             User.GetUsers();
+            if (User.currUser != null ) 
+            {
+
+            }
         }
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -21,22 +25,25 @@ namespace kajarendeloapp
 
         private void regButton_Click(object sender, RoutedEventArgs e)
         {
-            new User(unBox.Text, pwBox.Password, emailBox.Text);
-        }
-
-        private void logoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            User.LogOut();
-        }
-
-        private void editButton_Click(object sender, RoutedEventArgs e)
-        {
-            User.EditUser();
+            
         }
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             User.OnExit();
-            Environment.Exit(0);
+        }
+
+        private void checkBox1_Changed(object sender, RoutedEventArgs e)
+        {
+            if (((CheckBox)sender).IsChecked == true)
+            {
+                usernamelabel.Visibility = Visibility.Hidden;
+                emailcimlabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                usernamelabel.Visibility = Visibility.Visible;
+                emailcimlabel.Visibility = Visibility.Hidden;
+            }
         }
     }
 }
