@@ -178,11 +178,14 @@ namespace kajarendeloapp
                     {
                         File.AppendAllText("userData.txt", "\r\n" + ID + ";" + EncryptString(UserName, unKey) + ";" + EncryptString(Password, pwKey) + ";" + EncryptString(Email.Split('@', '.')[0], emKey.Split('@', '.')[0]) + "@" + EncryptString(Email.Split('@', '.')[1], emKey.Split('@', '.')[1]) + "." + EncryptString(Email.Split('@', '.')[2], emKey.Split('@', '.')[2]) + ";");
                         File.AppendAllText("keys.txt", "\r\n" + ID + ";" + unKey + ";" + pwKey + ";" + emKey + ";" + Perms + ";");
-                        Login(UserName, Password, false);
                         File.SetAttributes("userData.txt", FileAttributes.Hidden);
                         File.SetAttributes("keys.txt", FileAttributes.Hidden);
                         File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
-                        MessageBox.Show("Sikeres regisztráció!\nBeléptél ezzel a fiókkal: " + currUser.UserName);
+                        if (ID != "1" && ID != "2")
+                        {
+                            Login(UserName, Password, false);
+                            MessageBox.Show("Sikeres regisztráció!\nBeléptél ezzel a fiókkal: " + currUser.UserName);
+                        }
                     }                    
                 }
                 else
@@ -265,6 +268,8 @@ namespace kajarendeloapp
                     f2.Close();
                     f3.Close();
                     new User("admin1", "admin2", "admin@admin.com", "a");
+                    new User("admin2", "admin3", "admin2@admin2.com", "a");
+                    new User("teszt1", "teszt2", "teszt@teszt.com");
                 }
             }
             catch (Exception e)
