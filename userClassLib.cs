@@ -542,6 +542,7 @@ namespace kajarendeloapp
                 return false;
             }
         }
+        //jelszó módosítás
         public static void EditUser()
         {
             try
