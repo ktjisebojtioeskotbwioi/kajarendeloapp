@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Documents;
+﻿using System.Windows;
 
 namespace kajarendeloapp
 {
@@ -33,7 +31,6 @@ namespace kajarendeloapp
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
         }
-
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
             if (User.LogOut())
@@ -43,12 +40,10 @@ namespace kajarendeloapp
                 Close();
             }
         }
-
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             User.EditUser();
         }
-
         private void ordersButton_Click(object sender, RoutedEventArgs e)
         {
             new Food.OrderGridWindow();
@@ -57,10 +52,21 @@ namespace kajarendeloapp
         {
             termekgrid1.ItemsSource = Food.foods;
         }
-
         private void basket_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Hozzáadva a kosárhoz!");
+            string amount = new User.InputWindow("Mennyit szeretnél rendelni?", true).ShowDialog();
+            if (amount != null && int.TryParse(amount, out _))
+            {
+                if (MessageBox.Show("Biztos vagy benne, hogy meg akarsz rendelni " + amount + "db " + Food.foods[termekgrid1.SelectedIndex].Name + "-t/-át/-ét?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    new Food.Order(Food.foods[termekgrid1.SelectedIndex].ID, amount);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Adj meg egy számot!");
+                return;
+            }
         }
     }
 }

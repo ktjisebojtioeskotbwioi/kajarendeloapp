@@ -316,7 +316,7 @@ namespace kajarendeloapp
                 }
                 foreach (User user in userList)
                 {
-                    if (user.UserName == username || user.Email == username && user.Password == password && user.UserName != "Deleted;")
+                    if (user.UserName == username && user.Password == password && user.UserName != "Deleted;" || user.Email == username && user.Password == password)
                     {
                         File.SetAttributes("userData.txt", FileAttributes.Normal);
                         File.SetAttributes("keys.txt", FileAttributes.Normal);
@@ -343,7 +343,7 @@ namespace kajarendeloapp
                         File.SetAttributes("userData.txt", FileAttributes.Hidden);
                         File.SetAttributes("keys.txt", FileAttributes.Hidden);
                         File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
-                        isLoginSuccessful = true;                       
+                        isLoginSuccessful = true;
                         return true;
                     }
                 }
@@ -595,12 +595,12 @@ namespace kajarendeloapp
             }
         }
         //netről lopott class egy text bemenetes messageboxra, kicsit átalakítva lol
-        private protected class InputWindow : Window
+        public class InputWindow : Window
         {
 
             Window Box = new Window();
             FontFamily font = new FontFamily("Tahoma");
-            new int FontSize = 30;
+            new int FontSize = 16;
             StackPanel sp1 = new StackPanel();
             string title = "Megerősítés";
             string boxcontent;
@@ -613,16 +613,22 @@ namespace kajarendeloapp
             Brush InputBackgroundColor = Brushes.White;
             //bool clicked = false;
             PasswordBox input = new PasswordBox();
+            TextBox input2 = new TextBox();
             Button ok = new Button();
             Button cancel = new Button();
             bool inputreset = false;
-            internal protected InputWindow(string content)
+            static bool m = false;
+            internal protected InputWindow(string content, bool n = false)
             {
                 try
                 {
                     boxcontent = content;
                 }
                 catch { boxcontent = "Error!"; }
+                if (n != false)
+                {
+                    m = true;
+                }
                 windowdef();
             }
             internal protected InputWindow(string content, string Htitle, string DefaultText)
@@ -691,14 +697,27 @@ namespace kajarendeloapp
                 content.FontSize = FontSize;
                 sp1.Children.Add(content);
 
-                input.Background = InputBackgroundColor;
-                input.FontFamily = font;
-                input.FontSize = FontSize;
-                input.HorizontalAlignment = HorizontalAlignment.Center;
-                input.Password = defaulttext;
-                input.MinWidth = 200;
-                input.MouseEnter += input_MouseDown;
-                sp1.Children.Add(input);
+                if (!m)
+                {
+                    input.Background = InputBackgroundColor;
+                    input.FontFamily = font;
+                    input.FontSize = FontSize;
+                    input.HorizontalAlignment = HorizontalAlignment.Center;
+                    input.Password = defaulttext;
+                    input.MinWidth = 200;
+                    input.MouseEnter += input_MouseDown;
+                    sp1.Children.Add(input);
+                }
+                else
+                {
+                    input2.Background = InputBackgroundColor;
+                    input2.FontFamily = font;
+                    input2.FontSize = FontSize;
+                    input2.HorizontalAlignment = HorizontalAlignment.Center;
+                    input2.Text = defaulttext;
+                    input2.MinWidth = 200;
+                    sp1.Children.Add(input2);
+                }
                 ok.Width = 70;
                 ok.Height = 30;
                 ok.Click += ok_Click;
@@ -733,6 +752,11 @@ namespace kajarendeloapp
             private void ok_Click(object sender, RoutedEventArgs e)
             {
                 //clicked = true;
+                if (m)
+                {
+                    Box.Close();
+                    return;
+                }
                 if (input.Password == defaulttext || input.Password == "")
                 {
                     MessageBox.Show(errormessage, errortitle);
@@ -745,12 +769,20 @@ namespace kajarendeloapp
             }
             new internal protected string ShowDialog()
             {
-                Box.ShowDialog();
-                return input.Password;
+                if (m)
+                {
+                    Box.ShowDialog();
+                    return input2.Text;
+                }
+                else
+                {
+                    Box.ShowDialog();
+                    return input.Password;
+                }
             }
         }
         //editelésre grid ablak, ezt már én csináltam teljesen lol
-        private protected class GridWindow : Window
+        public class GridWindow : Window
         {
             Window window = new Window();
             DataGrid grid = new DataGrid();
@@ -763,20 +795,19 @@ namespace kajarendeloapp
             private DataGridTemplateColumn emailColumn = new DataGridTemplateColumn() { Header = "Email cím", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn permsColumn = new DataGridTemplateColumn() { Header = "Jogosultságok", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn deleteColumn = new DataGridTemplateColumn() { Header = "Fiók törlése", Width = DataGridLength.Auto, IsReadOnly = true };
-            private static string currentCellValue = "";
+            private string currentCellValue = "";
             internal GridWindow(int x)
             {
-                window.Width = 650;
-                window.Height = 300;
+                window.Width = 800;
+                window.Height = 350;
                 window.Background = Brushes.Wheat;
                 grid.Background = Brushes.Cornsilk;
                 grid.RowBackground = Brushes.Beige;
                 grid.AutoGenerateColumns = false;
-                grid.Width = 650;
-                grid.Height = 300;
+                grid.Width = 800;
+                grid.Height = 350;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
-                grid.SetBinding(DataGrid.SelectedItemProperty, new Binding("currentString") { Source = grid, Mode = BindingMode.OneWayToSource });
                 grid.DataContext = userList;
                 grid.ItemsSource = userList;
                 switch (x)
@@ -797,7 +828,7 @@ namespace kajarendeloapp
             }
             private void grid_Loaded_0(object sender, RoutedEventArgs e)
             {
-                window.Title = "Fiókok beállításainak módosítása (Felhasználó:" + currUser.UserName + ")";
+                window.Title = "Fiókok beállításainak módosítása (Felhasználó: " + currUser.UserName + ")";
                 Binding b = new Binding();
                 b.Mode = BindingMode.TwoWay;
                 b.ValidatesOnExceptions = true;
@@ -872,7 +903,7 @@ namespace kajarendeloapp
             }
             private void grid_Loaded_1(object sender, RoutedEventArgs e)
             {
-                window.Title = "Fiók adatainak módosítása (Felhasználó:" + currUser.UserName + ")";
+                window.Title = "Fiók adatainak módosítása (Felhasználó: " + currUser.UserName + ")";
                 grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
                 Binding b = new Binding();
                 b.Mode = BindingMode.TwoWay;

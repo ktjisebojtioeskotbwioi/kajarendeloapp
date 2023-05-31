@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -83,11 +81,11 @@ namespace kajarendeloapp
                     FileStream f1 = File.Open("foods.txt", FileMode.OpenOrCreate);
                     File.SetAttributes(f1.Name, FileAttributes.Hidden);
                     f1.Close();
-                    new Food("Margherita", "1600", "paradicsom, sajt");
-                    new Food("Salamé", "1900", "paradicsom, sajt, szalámi");
-                    new Food("Bolognese", "2100", "bolognai ragu, parmezán, sajt");
-                    new Food("Magyaros", "2300", "paradicsom, csípős kolbász, ff.tarja, hagyma, hegyes erős, sajt");
-                    new Food("Gyrosos", "2700", "tejfölös alap, gyros hús, paradicsom, lilahagyma, kukorica, kígyóuborka, sajt, fokhagyma");
+                    new Food("Margherita pizza", "1600", "paradicsom, sajt");
+                    new Food("Salamé pizza", "1900", "paradicsom, sajt, szalámi");
+                    new Food("Bolognese pizza", "2100", "bolognai ragu, parmezán, sajt");
+                    new Food("Magyaros pizza", "2300", "paradicsom, csípős kolbász, ff.tarja, hagyma, hegyes erős, sajt");
+                    new Food("Gyrosos pizza", "2700", "tejfölös alap, gyros hús, paradicsom, lilahagyma, kukorica, kígyóuborka, sajt, fokhagyma");
                     new Food("Coca Cola", "300", "0,5l");
                 }
                 Order.GetOrders();
@@ -95,7 +93,7 @@ namespace kajarendeloapp
             catch
             {
                 File.SetAttributes("foods.txt", FileAttributes.Hidden);
-            }           
+            }
         }
         public class Order
         {
@@ -128,7 +126,7 @@ namespace kajarendeloapp
                     cost = (Convert.ToInt32(foods[Convert.ToInt32(itemid)].cost) * Convert.ToInt32(amount)).ToString();
                     File.SetAttributes("orders.txt", FileAttributes.Normal);
                     transactionid = File.ReadAllLines("orders.txt").Length.ToString();
-                    time = DateTime.Now.ToString("yyyy.MM.dd., HH:mm:ss");
+                    time = DateTime.Now.ToString("yyyy.MM.dd. HH:mm:ss");
                     itemname = foods[Convert.ToInt32(itemID)].Name;
                     orders.Add(this);
                     if (File.ReadAllLines("orders.txt").Length == 0)
@@ -199,21 +197,20 @@ namespace kajarendeloapp
             private DataGridTextColumn itemIDColumn = new DataGridTextColumn() { Header = "Étel ID", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTextColumn itemNameColumn = new DataGridTextColumn() { Header = "Étel neve", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTextColumn AmountColumn = new DataGridTextColumn() { Header = "Mennyiség", Width = DataGridLength.Auto, IsReadOnly = true };
-            private DataGridTextColumn CostColumn = new DataGridTextColumn() { Header = "Ár", Width = DataGridLength.Auto, IsReadOnly = true };
+            private DataGridTextColumn CostColumn = new DataGridTextColumn() { Header = "Ár (ft)", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTextColumn TimeColumn = new DataGridTextColumn() { Header = "Időpont", Width = DataGridLength.Auto, IsReadOnly = true };
             public OrderGridWindow()
             {
-                window.Width = 650;
-                window.Height = 300;
+                window.Width = 800;
+                window.Height = 350;
                 window.Background = Brushes.Wheat;
                 grid.Background = Brushes.Cornsilk;
                 grid.RowBackground = Brushes.Beige;
                 grid.AutoGenerateColumns = false;
-                grid.Width = 650;
-                grid.Height = 300;
+                grid.Width = 800;
+                grid.Height = 350;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
-                grid.SetBinding(DataGrid.SelectedItemProperty, new Binding("currentString") { Source = grid, Mode = BindingMode.OneWayToSource });
                 grid.DataContext = Order.orders;
                 Binding b = new Binding();
                 b.Mode = BindingMode.OneWay;
@@ -236,23 +233,23 @@ namespace kajarendeloapp
                 {
                     grid.ItemsSource = Order.orders;
                     grid.Columns.Add(userIDColumn);
-                    window.Title = "Összes rendelés (Felhasználó:" + User.currUser.UserName + ")";
+                    window.Title = "Összes rendelés (Felhasználó: " + User.currUser.UserName + ")";
                 }
                 else
                 {
                     grid.ItemsSource = Order.orders.Where(n => n.userID == User.currUser.ID);
-                    window.Title = "Rendeléseim (Felhasználó:" + User.currUser.UserName + ")";
+                    window.Title = "Rendeléseim (Felhasználó: " + User.currUser.UserName + ")";
                 }
                 grid.Columns.Add(itemIDColumn);
                 grid.Columns.Add(itemNameColumn);
                 grid.Columns.Add(AmountColumn);
                 grid.Columns.Add(CostColumn);
-                grid.Columns.Add(TimeColumn);                           
+                grid.Columns.Add(TimeColumn);
                 grid.HorizontalAlignment = HorizontalAlignment.Left;
                 panel.Children.Add(grid);
                 window.Content = panel;
                 window.Show();
-            }            
+            }
         }
     }
 }
