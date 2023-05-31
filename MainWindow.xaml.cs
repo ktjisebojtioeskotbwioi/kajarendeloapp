@@ -9,13 +9,16 @@ namespace kajarendeloapp
     /// </summary>
     public partial class MainWindow : Window
     {
+        static int a = 0;
         public MainWindow()
         {
             InitializeComponent();
             User.GetUsers();
-            if (User.currUser != null ) 
+            if (User.currUser == null ) 
             {
-
+                new User.LoginWindow();
+                a = 1;
+                Close();
             }
         }
         private void loginButton_Click(object sender, RoutedEventArgs e)
@@ -30,6 +33,11 @@ namespace kajarendeloapp
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             User.OnExit();
+            User.LogOut(true);
+            if (a != 1)
+            {
+                Environment.Exit(0);
+            }
         }
 
         private void checkBox1_Changed(object sender, RoutedEventArgs e)

@@ -587,7 +587,7 @@ namespace kajarendeloapp
             }
         }
         //netről lopott class egy text bemenetes messageboxra, kicsit átalakítva lol
-        internal class InputBox : Window
+        private protected class InputBox : Window
         {
 
             Window Box = new Window();
@@ -742,7 +742,7 @@ namespace kajarendeloapp
             }
         }
         //editelésre grid box, ezt már én csináltam teljesen lol
-        internal class GridBox : Window
+        private protected class GridBox : Window
         {
             Window window = new Window();
             DataGrid grid = new DataGrid();
@@ -1463,6 +1463,119 @@ namespace kajarendeloapp
                 else
                 {
                     grid.ItemsSource = userList.Where(x => x.ID == currUser.ID);
+                }
+            }
+        }
+        public class RegWindow:Window
+        {
+            public RegWindow()
+            {
+
+            }
+        }
+        public class LoginWindow:Window
+        {
+            Window loginWindow = new Window();
+            Grid grid = new Grid();
+            StackPanel sp = new StackPanel();
+            TextBox unBox = new TextBox();
+            PasswordBox pwBox = new PasswordBox();
+            Button loginButton = new Button();
+            Button regButton = new Button();
+            Label usernamelabel = new Label();
+            Label emailcimlabel = new Label();
+            Label jelszolabel = new Label();
+            CheckBox checkBox1 = new CheckBox();
+
+            public LoginWindow()
+            {
+                loginWindow.Title = "Bejelentkezés";
+                loginWindow.Height = 183;
+                loginWindow.Width = 325;
+                loginWindow.Background = Brushes.Beige;
+                grid.Height = 183;
+                grid.Width = 325;
+                unBox.Height = 21;
+                unBox.Width = 115;
+                unBox.HorizontalAlignment = HorizontalAlignment.Center;
+                unBox.VerticalAlignment = VerticalAlignment.Top;
+                unBox.Margin = new Thickness(0,15,0,0);
+                unBox.TextWrapping = TextWrapping.Wrap;
+                pwBox.Height = 21;
+                pwBox.Width = 115;
+                pwBox.HorizontalAlignment = HorizontalAlignment.Center;
+                pwBox.Margin = new Thickness(0,41,0,0);
+                loginButton.HorizontalAlignment = HorizontalAlignment.Center;
+                loginButton.VerticalAlignment = VerticalAlignment.Top;
+                loginButton.Width = 75;
+                loginButton.Click += loginButton_Click;
+                loginButton.Content = "Bejelentkezés";
+                loginButton.Margin = new Thickness(0,88,0,0);
+                regButton.HorizontalAlignment = HorizontalAlignment.Center;
+                regButton.VerticalAlignment = VerticalAlignment.Top;
+                regButton.Width = 75;
+                regButton.Content = "Regisztráció";
+                regButton.Margin = new Thickness(0,111,0, 0);
+                usernamelabel.HorizontalAlignment = HorizontalAlignment.Left;
+                usernamelabel.VerticalAlignment = VerticalAlignment.Top;
+                usernamelabel.Content = "Felhasználónév";
+                usernamelabel.Margin = new Thickness(10,10,0,0);
+                emailcimlabel.HorizontalAlignment = HorizontalAlignment.Left;
+                emailcimlabel.VerticalAlignment = VerticalAlignment.Top;
+                emailcimlabel.Visibility = Visibility.Hidden;
+                emailcimlabel.Margin = new Thickness(35,10,0,0);
+                emailcimlabel.Content = "Email cím";
+                jelszolabel.HorizontalAlignment = HorizontalAlignment.Left;
+                jelszolabel.VerticalAlignment = VerticalAlignment.Top;
+                jelszolabel.Margin = new Thickness(59,36,0,0);
+                jelszolabel.Content = "Jelszó";
+                checkBox1.HorizontalAlignment = HorizontalAlignment.Center;
+                checkBox1.VerticalAlignment = VerticalAlignment.Top;
+                checkBox1.Checked += checkBox1_Changed;
+                checkBox1.Unchecked += checkBox1_Changed;
+                checkBox1.Margin = new Thickness(0,66,0,0);
+                checkBox1.Content = "E-mail cím használata";
+
+
+                grid.Children.Add(unBox);
+                grid.Children.Add(pwBox);
+                grid.Children.Add(loginButton);
+                grid.Children.Add(regButton);
+                grid.Children.Add(usernamelabel);
+                grid.Children.Add(emailcimlabel);
+                grid.Children.Add(jelszolabel);
+                grid.Children.Add(checkBox1);
+
+                loginWindow.Content = grid;
+                loginWindow.Show();
+            }
+
+            private void loginButton_Click(object sender, RoutedEventArgs e)
+            {
+                Login(unBox.Text, pwBox.Password);
+            }
+
+            private void regButton_Click(object sender, RoutedEventArgs e)
+            {
+                new RegWindow();
+                Close();
+            }
+            protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+            {
+                OnExit();
+            }
+
+            private void checkBox1_Changed(object sender, RoutedEventArgs e)
+            {
+                if (((CheckBox)sender).IsChecked == true)
+                {
+                    usernamelabel.Visibility = Visibility.Hidden;
+                    emailcimlabel.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    usernamelabel.Visibility = Visibility.Visible;
+                    emailcimlabel.Visibility = Visibility.Hidden;
                 }
             }
         }
