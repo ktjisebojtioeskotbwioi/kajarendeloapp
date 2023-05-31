@@ -187,7 +187,7 @@ namespace kajarendeloapp
                             Login(UserName, Password, false);
                             addUserSuccessful = true;
                             MessageBox.Show("Sikeres regisztráció!\nBeléptél ezzel a fiókkal: " + currUser.UserName);
-                        }                       
+                        }
                     }
                 }
                 else
@@ -295,7 +295,7 @@ namespace kajarendeloapp
         //megnézi, hogy szerepel-e a fiókok közt a megadott felhasználónév és jelszó, majd ha igen, elmenti melyik
         //a messageboxhoz ne nyúlj, az mindig true, kivéve mikor regisztrál és automatikusan bejelentkezik
         public static bool Login(string username, string password, bool doLoginPopup = true)
-        {            
+        {
             try
             {
                 bool isLoginSuccessful = false;
@@ -312,7 +312,7 @@ namespace kajarendeloapp
                     {
                         throw new Exception("Már be vagy jelentkezve ezzel a fiókkal!");
                     }
-                }                
+                }
                 foreach (User user in userList)
                 {
                     if (user.UserName == username || user.Email == username && user.Password == password && user.UserName != "Deleted;")
@@ -362,7 +362,7 @@ namespace kajarendeloapp
             return false;
         }
         //kijelentkezik a jelenlegi fiókból, az onDeletion az mindig false kivéve a törlő functionnek
-        public static void LogOut(bool onDeletion = false)
+        public static bool LogOut(bool onDeletion = false)
         {
             File.SetAttributes("userData.txt", FileAttributes.Normal);
             File.SetAttributes("keys.txt", FileAttributes.Normal);
@@ -378,6 +378,7 @@ namespace kajarendeloapp
                             currUser = null;
                             File.WriteAllText("currentLogin.txt", string.Empty);
                             MessageBox.Show("Sikeres kijelentkezés.");
+                            return true;
                         }
                     }
                     else
@@ -401,6 +402,7 @@ namespace kajarendeloapp
             File.SetAttributes("userData.txt", FileAttributes.Hidden);
             File.SetAttributes("keys.txt", FileAttributes.Hidden);
             File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
+            return false;
         }
         //eltávolít egy fiókot
         private protected static bool DeleteUser([Optional] string deleteableUser)
@@ -746,7 +748,7 @@ namespace kajarendeloapp
                 return input.Password;
             }
         }
-        //editelésre grid box, ezt már én csináltam teljesen lol
+        //editelésre grid ablak, ezt már én csináltam teljesen lol
         private protected class GridBox : Window
         {
             Window window = new Window();
@@ -1515,12 +1517,12 @@ namespace kajarendeloapp
                 loginButton.Width = 75;
                 loginButton.Click += loginButton_Click;
                 loginButton.Content = "Bejelentkezés";
-                loginButton.Margin = new Thickness(121,122,121,0);
+                loginButton.Margin = new Thickness(121, 122, 121, 0);
                 regButton.HorizontalAlignment = HorizontalAlignment.Center;
                 regButton.VerticalAlignment = VerticalAlignment.Top;
                 regButton.Width = 75;
                 regButton.Click += regButton_Click;
-                regButton.Margin = new Thickness(121,97,121,0);
+                regButton.Margin = new Thickness(121, 97, 121, 0);
                 regButton.Content = "Regisztráció";
                 usernamelabel.HorizontalAlignment = HorizontalAlignment.Left;
                 usernamelabel.VerticalAlignment = VerticalAlignment.Top;
@@ -1528,7 +1530,7 @@ namespace kajarendeloapp
                 usernamelabel.Margin = new Thickness(10, 10, 0, 0);
                 emailcimlabel.HorizontalAlignment = HorizontalAlignment.Left;
                 emailcimlabel.VerticalAlignment = VerticalAlignment.Top;
-                emailcimlabel.Margin = new Thickness(40,62,0,0);
+                emailcimlabel.Margin = new Thickness(40, 62, 0, 0);
                 emailcimlabel.Content = "Email cím";
                 jelszolabel.HorizontalAlignment = HorizontalAlignment.Left;
                 jelszolabel.VerticalAlignment = VerticalAlignment.Top;
@@ -1691,4 +1693,4 @@ namespace kajarendeloapp
             }
         }
     }
-}        
+}

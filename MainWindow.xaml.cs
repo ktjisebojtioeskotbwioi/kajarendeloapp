@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace kajarendeloapp
 {
@@ -14,7 +12,7 @@ namespace kajarendeloapp
         {
             InitializeComponent();
             User.GetUsers();
-            if (User.currUser == null) 
+            if (User.currUser == null)
             {
                 new User.LoginWindow();
                 a = 1;
@@ -32,6 +30,19 @@ namespace kajarendeloapp
                 User.OnExit();
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
+        }
+
+        private void logoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            User.LogOut();
+            new User.LoginWindow();
+            a = 1;
+            Close();
+        }
+
+        private void editButton_Click(object sender, RoutedEventArgs e)
+        {
+            User.EditUser();
         }
     }
 }

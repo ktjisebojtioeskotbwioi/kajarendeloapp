@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:kajarendeloapp"
         mc:Ignorable="d"
-        Title="Bejelentkezés" Height="183" Width="325" Background="Beige">
+        Title="" Height="600" Width="1000" Background="Beige">
     <Grid>
-        
+        <Button x:Name="logoutButton" Content="Kijelentkezés" HorizontalAlignment="Left" Margin="912,10,0,0" VerticalAlignment="Top" Width="78" Height="38" Click="logoutButton_Click"/>
+        <Button x:Name="editButton" Content="Módosítás" HorizontalAlignment="Left" Margin="912,53,0,0" VerticalAlignment="Top" Width="78" Height="38" Click="editButton_Click"/>
+
     </Grid>
 </Window>
