@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace kajarendeloapp
 {
@@ -34,15 +36,31 @@ namespace kajarendeloapp
 
         private void logoutButton_Click(object sender, RoutedEventArgs e)
         {
-            User.LogOut();
-            new User.LoginWindow();
-            a = 1;
-            Close();
+            if (User.LogOut())
+            {
+                new User.LoginWindow();
+                a = 1;
+                Close();
+            }
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             User.EditUser();
+        }
+
+        private void ordersButton_Click(object sender, RoutedEventArgs e)
+        {
+            new Food.OrderGridWindow();
+        }
+        private void termekgrid1_Loaded(object sender, RoutedEventArgs e)
+        {
+            termekgrid1.ItemsSource = Food.foods;
+        }
+
+        private void basket_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hozzáadva a kosárhoz!");
         }
     }
 }

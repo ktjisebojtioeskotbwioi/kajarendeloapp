@@ -273,6 +273,7 @@ namespace kajarendeloapp
                     new User("admin2", "admin3", "admin2@admin2.com", "a");
                     new User("teszt1", "teszt2", "teszt@teszt.com");
                 }
+                Food.GetFoods();
             }
             catch (Exception e)
             {
@@ -342,7 +343,7 @@ namespace kajarendeloapp
                         File.SetAttributes("userData.txt", FileAttributes.Hidden);
                         File.SetAttributes("keys.txt", FileAttributes.Hidden);
                         File.SetAttributes("currentLogin.txt", FileAttributes.Hidden);
-                        isLoginSuccessful = true;
+                        isLoginSuccessful = true;                       
                         return true;
                     }
                 }
@@ -440,7 +441,7 @@ namespace kajarendeloapp
                 }
                 if (currUser != null)
                 {
-                    if (tempUser != null && tempUser.Perms == "a" && tempUser.Password == new InputBox("Add meg a jelszót ismét", "", "Arial", 16).ShowDialog() || tempUser == null && currUser.Password == new InputBox("Add meg a jelszót ismét", "", "Arial", 16).ShowDialog())
+                    if (tempUser != null && tempUser.Perms == "a" && tempUser.Password == new InputWindow("Add meg a jelszót ismét", "", "Arial", 16).ShowDialog() || tempUser == null && currUser.Password == new InputWindow("Add meg a jelszót ismét", "", "Arial", 16).ShowDialog())
                     {
                         if (MessageBox.Show("Biztos vagy benne, hogy törölni akarod ezt a fiókot?", "Megerősítés", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         {
@@ -581,11 +582,11 @@ namespace kajarendeloapp
                 }
                 if (currUser.Perms == "a")
                 {
-                    new GridBox(0);
+                    new GridWindow(0);
                 }
                 else
                 {
-                    new GridBox(1);
+                    new GridWindow(1);
                 }
             }
             catch (Exception e)
@@ -594,7 +595,7 @@ namespace kajarendeloapp
             }
         }
         //netről lopott class egy text bemenetes messageboxra, kicsit átalakítva lol
-        private protected class InputBox : Window
+        private protected class InputWindow : Window
         {
 
             Window Box = new Window();
@@ -615,7 +616,7 @@ namespace kajarendeloapp
             Button ok = new Button();
             Button cancel = new Button();
             bool inputreset = false;
-            internal protected InputBox(string content)
+            internal protected InputWindow(string content)
             {
                 try
                 {
@@ -624,7 +625,7 @@ namespace kajarendeloapp
                 catch { boxcontent = "Error!"; }
                 windowdef();
             }
-            internal protected InputBox(string content, string Htitle, string DefaultText)
+            internal protected InputWindow(string content, string Htitle, string DefaultText)
             {
                 try
                 {
@@ -649,7 +650,7 @@ namespace kajarendeloapp
                 }
                 windowdef();
             }
-            internal protected InputBox(string content, string Htitle, string Font, int Fontsize)
+            internal protected InputWindow(string content, string Htitle, string Font, int Fontsize)
             {
                 try
                 {
@@ -749,7 +750,7 @@ namespace kajarendeloapp
             }
         }
         //editelésre grid ablak, ezt már én csináltam teljesen lol
-        private protected class GridBox : Window
+        private protected class GridWindow : Window
         {
             Window window = new Window();
             DataGrid grid = new DataGrid();
@@ -763,15 +764,15 @@ namespace kajarendeloapp
             private DataGridTemplateColumn permsColumn = new DataGridTemplateColumn() { Header = "Jogosultságok", Width = DataGridLength.Auto, IsReadOnly = true };
             private DataGridTemplateColumn deleteColumn = new DataGridTemplateColumn() { Header = "Fiók törlése", Width = DataGridLength.Auto, IsReadOnly = true };
             private static string currentCellValue = "";
-            internal GridBox(int x)
+            internal GridWindow(int x)
             {
-                window.Width = 510;
+                window.Width = 650;
                 window.Height = 300;
                 window.Background = Brushes.Wheat;
                 grid.Background = Brushes.Cornsilk;
                 grid.RowBackground = Brushes.Beige;
                 grid.AutoGenerateColumns = false;
-                grid.Width = 1000;
+                grid.Width = 650;
                 grid.Height = 300;
                 grid.Margin = new Thickness(0, 0, 0, 0);
                 grid.AlternatingRowBackground = Brushes.Beige;
@@ -926,9 +927,9 @@ namespace kajarendeloapp
                         {
                             throw new Exception("Nem módosíthatod ezt a fiókot.");
                         }
-                        if (currUser.Password == new InputBox("Add meg a jelszót ismét", "Megerősítés", "Arial", 16).ShowDialog())
+                        if (currUser.Password == new InputWindow("Add meg a jelszót ismét", "Megerősítés", "Arial", 16).ShowDialog())
                         {
-                            string tempPw = new InputBox("Írd be az új jelszót", "Jelszó módosítása", "Arial", 16).ShowDialog();
+                            string tempPw = new InputWindow("Írd be az új jelszót", "Jelszó módosítása", "Arial", 16).ShowDialog();
                             string tempKey = "";
                             if (tempPw.Length < 6 || tempPw.Length > 32)
                             {
@@ -987,9 +988,9 @@ namespace kajarendeloapp
                     }
                     else
                     {
-                        if (currUser.Password == new InputBox("Add meg a jelszót ismét", "Megerősítés", "Arial", 16).ShowDialog())
+                        if (currUser.Password == new InputWindow("Add meg a jelszót ismét", "Megerősítés", "Arial", 16).ShowDialog())
                         {
-                            string tempPw = new InputBox("Írd be az új jelszavad", "Jelszó módosítása", "Arial", 16).ShowDialog();
+                            string tempPw = new InputWindow("Írd be az új jelszavad", "Jelszó módosítása", "Arial", 16).ShowDialog();
                             string tempKey = "";
                             if (tempPw.Length < 6 || tempPw.Length > 32)
                             {
