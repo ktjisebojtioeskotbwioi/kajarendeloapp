@@ -12,7 +12,7 @@
             <TextBlock TextWrapping="Wrap" TextAlignment="Center">Fiók módosítása</TextBlock>
         </Button>
         <Button x:Name="ordersButton" Content="Rendelések" HorizontalAlignment="Left" Margin="899,96,0,0" VerticalAlignment="Top" Width="78" Height="38" Click="ordersButton_Click"/>
-        <DataGrid x:Name="termekgrid1" d:ItemsSource="{Binding}" Margin="0,53,93,0" AutoGenerateColumns="False" Background="Beige" AlternatingRowBackground="Beige" Loaded="termekgrid1_Loaded" RowHeight="30" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False">
+        <DataGrid x:Name="termekgrid1" ItemsSource="{Binding}" Margin="0,53,93,0" AutoGenerateColumns="False" Background="Beige" AlternatingRowBackground="Beige" Loaded="termekgrid1_Loaded" RowHeight="30" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Étel ID" Binding="{Binding ID}" Width="60" FontSize="16">
                     <DataGridTextColumn.ElementStyle>

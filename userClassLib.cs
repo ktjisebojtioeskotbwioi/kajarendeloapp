@@ -1094,7 +1094,7 @@ namespace kajarendeloapp
             {
                 try
                 {
-                    if (grid.SelectedIndex == 0)
+                    if (grid.SelectedIndex == 0 && currUser.Perms != "n")
                     {
                         throw new Exception("Ezt a fiókot nem lehet törölni.");
                     }
